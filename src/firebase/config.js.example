@@ -1,0 +1,19 @@
+import * as firebase from 'firebase';
+import '@firebase/auth';
+import '@firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: '<<YOUR_API_KEY>>',
+  authDomain: '<<your-auth-domain-b1234.firebaseapp.com>>',
+  databaseURL: '<<your-db-domain-b1234.firebaseio.com>>',
+  projectId: '<<your-project-id-b1234>>',
+  storageBucket: '<<your-storagebucket-b1234.appspot.com>>',
+  messagingSenderId: '12345-insert-yourse',
+  appId: '<<your-app-id>>',
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+export { firebase };

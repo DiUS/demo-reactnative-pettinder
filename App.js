@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react'
+import { DefaultTheme, Provider as PaperProvider, IconButton } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { Text, View } from 'react-native'
+import { Text, View,  } from 'react-native'
 import { LoginScreen, HomeScreen, RegistrationScreen } from './src/screens'
 import { firebase } from './src/firebase/config'
 import { decode, encode } from 'base-64'
@@ -44,20 +45,46 @@ export default function App() {
     )
   }
 
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: 'tomato',
+      accent: 'yellow',
+    },
+  };
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        { user ? (
-          <Stack.Screen name="Home">
-            {props => <HomeScreen {...props} extraData={user} />}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Registration" component={RegistrationScreen} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider theme={theme}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {user ? (
+            <Stack.Screen name="Home" options={{
+              headerRight: () => 
+                <IconButton icon="logout" onPress={() => setUser(null)}
+                title="Info"
+                color="#fff"/>
+              ,
+              title: 'My home',
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+              
+            }}>
+              {props => <HomeScreen {...props} extraData={user}  />}
+            </Stack.Screen>
+          ) : (
+              <>
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
+              </>
+            )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
