@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
+import BottomTabBar from '../../components/BottomTabBar/BottomTabBar';
 
 export default function HomeScreen(props) {
     const { extraData } = props;
@@ -7,6 +8,8 @@ export default function HomeScreen(props) {
     return (
         <View>
             <Text>Home Screen, Welcome {extraData.fullName}</Text>
+            <BottomTabBar/>
         </View>
     )
 }
+
