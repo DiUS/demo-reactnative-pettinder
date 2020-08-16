@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { DefaultTheme, Provider as PaperProvider, IconButton } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View,  } from 'react-native'
-import { LoginScreen, HomeScreen, RegistrationScreen } from './src/screens'
+import { LoginScreen, HomeScreen, RegistrationScreen, ProfileScreen } from './src/screens'
 import { firebase } from './src/firebase/config'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
@@ -54,9 +56,19 @@ export default function App() {
     },
   };
 
+  function tabNav() {
+  return <Tab.Navigator>
+    <Tab.Screen name="Home" >
+      {props => <HomeScreen {...props} extraData={user}  />}
+    </Tab.Screen>
+    <Tab.Screen name="Profile" component={ProfileScreen} />
+  </Tab.Navigator>}
+  
+
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
+      
         <Stack.Navigator>
           {user ? (
             <Stack.Screen name="Home" options={{
@@ -74,13 +86,15 @@ export default function App() {
                 fontWeight: 'bold',
               },
               
-            }}>
-              {props => <HomeScreen {...props} extraData={user}  />}
-            </Stack.Screen>
+            }} component={tabNav}/>
           ) : (
               <>
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="Login" >
+                  {props => <LoginScreen {...props} userCB={setUser} />}
+                </Stack.Screen>
+                <Stack.Screen name="Registration" >
+                  {props => <RegistrationScreen {...props} userCB={setUser} />}
+                </Stack.Screen>
               </>
             )}
         </Stack.Navigator>
