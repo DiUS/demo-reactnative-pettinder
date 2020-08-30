@@ -4,7 +4,7 @@ import { DefaultTheme, Provider as PaperProvider, IconButton } from 'react-nativ
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text, View,  } from 'react-native'
+import { Text, View, } from 'react-native'
 import { LoginScreen, HomeScreen, RegistrationScreen, ProfileScreen } from './src/screens'
 import { firebase } from './src/firebase/config'
 import { decode, encode } from 'base-64'
@@ -57,36 +57,44 @@ export default function App() {
   };
 
   function tabNav() {
-  return <Tab.Navigator>
-    <Tab.Screen name="Home" >
-      {props => <HomeScreen {...props} extraData={user}  />}
-    </Tab.Screen>
-    <Tab.Screen name="Profile" component={ProfileScreen} />
-  </Tab.Navigator>}
-  
+    return <Tab.Navigator>
+      <Tab.Screen name="Home" >
+        {props => <HomeScreen {...props} extraData={user} />}
+      </Tab.Screen>
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  }
+
 
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
-      
+
         <Stack.Navigator>
           {user ? (
-            <Stack.Screen name="Home" options={{
-              headerRight: () => 
-                <IconButton icon="logout" onPress={() => setUser(null)}
-                title="Info"
-                color="#fff"/>
-              ,
-              title: 'My home',
-              headerStyle: {
-                backgroundColor: '#f4511e',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              
-            }} component={tabNav}/>
+            <>
+              <Stack.Screen name="Home" options={{
+                headerRight: () =>
+                  <IconButton icon="logout" onPress={() => setUser(null)}
+                    title="Info"
+                    color="#fff" />
+                ,
+                title: 'My home',
+                headerStyle: {
+                  backgroundColor: '#f4511e',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+
+              }}>
+                {props => <HomeScreen {...props} extraData={user} />}
+              </Stack.Screen>
+              <Stack.Screen name="Profile">
+                {props => <ProfileScreen {...props} extraData={user} />}
+              </Stack.Screen>
+            </>
           ) : (
               <>
                 <Stack.Screen name="Login" >
