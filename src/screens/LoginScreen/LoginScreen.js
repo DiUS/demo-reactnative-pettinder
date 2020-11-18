@@ -17,8 +17,11 @@ export default function LoginScreen({navigation, userCB}) {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then((response) => {
+                console.log('response', response);
                 const uid = response.user.uid
+                console.log('uid', uid);
                 const usersRef = firebase.firestore().collection('users')
+                console.log('usersRef', usersRef);
                 usersRef
                     .doc(uid)
                     .get()
@@ -32,6 +35,7 @@ export default function LoginScreen({navigation, userCB}) {
                         // navigation.navigate('Home', {user})
                     })
                     .catch(error => {
+                        console.error('usersRef error', error);
                         alert(error)
                     });
             })

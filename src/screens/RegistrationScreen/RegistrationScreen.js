@@ -37,6 +37,7 @@ export default function RegistrationScreen({navigation}) {
                         // navigation.navigate('Home', {user: data})
                     })
                     .catch((error) => {
+                        console.log('Register error', error);
                         alert(error)
                     });
             })
